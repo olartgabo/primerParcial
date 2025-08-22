@@ -1,0 +1,276 @@
+1 PREGUNTA:
+En un sistema universitario explique como se podrian utilizar listas enlazadas para manejar la lista de estudiantes matriculados en un curso comparando con el uso de arreglos
+RESPUESTA:
+Listas Enlazadas vs Arreglos para Gestión de Estudiantes
+Implementación con Listas Enlazadas
+Las listas enlazadas ofrecen ventajas significativas para manejar matrículas universitarias debido a su naturaleza dinámica:
+Ventajas de las Listas Enlazadas:
+
+Flexibilidad de tamaño: No necesitamos conocer de antemano cuántos estudiantes se matricularánListas Enlazadas vs Arreglos para Gestión de Estudiantes
+Implementación con Listas Enlazadas
+Las listas enlazadas ofrecen ventajas significativas para manejar matrículas universitarias debido a su naturaleza dinámica:
+Ventajas de las Listas Enlazadas:
+
+Flexibilidad de tamaño: No necesitamos conocer de antemano cuántos estudiantes se matricularán
+Inserción/eliminación eficiente: Agregar o quitar estudiantes es O(1) si tenemos la referencia al nodo
+Uso eficiente de memoria: Solo se asigna memoria para los estudiantes realmente matriculados
+Facilidad para reordenar: Cambiar el orden de los estudiantes solo requiere modificar referencias
+Inserción/eliminación eficiente: Agregar o quitar estudiantes es O(1) si tenemos la referencia al nodo
+Uso eficiente de memoria: Solo se asigna memoria para los estudiantes realmente matriculados
+Facilidad para reordenar: Cambiar el orden de los estudiantes solo requiere modificar referencias
+Comparación con Arreglos
+Limitaciones de los arreglos:
+
+Tamaño fijo: Debemos definir un límite máximo de estudiantes
+Desperdicio de memoria: Si definimos un arreglo de 1000 posiciones pero solo tenemos 50 estudiantes, desperdiciamos 950 espacios
+Inserción/eliminación costosa: Requiere desplazar elementos, operación O(n)
+Fragmentación: Los espacios vacíos pueden quedar dispersos en el arreglo
+
+Ventajas de los arreglos:
+
+Acceso directo: Podemos acceder a cualquier estudiante por índice en O(1)
+Menor uso de memoria por nodo: No necesitamos almacenar referencias adicionales
+Mejor localidad de referencia: Los datos están contiguos en memoria
+
+Caso de Uso Universitario
+Para un sistema universitario, las listas enlazadas son superiores porque:
+
+Las matrículas fluctúan cada semestre
+Es común que estudiantes se retiren durante el período
+No necesitamos acceso aleatorio frecuente por posición
+El orden puede cambiar (por ejemplo, para organizar por rendimiento académico)
+
+
+2 PREGUNTA:
+Analice cómo las excepciones personalizadas pueden mejorar la legibilidad y robustez de un programa. Proponga un ejemplo en el contexto de un sistema bancario.
+2 RESPUESTA
+// ==================== EXCEPCIONES PERSONALIZADAS ====================
+
+/**
+ * Excepción para fondos insuficientes
+ */
+class FondosInsuficientesException extends Exception {
+    private double saldoActual;
+    private double montoSolicitado;
+    
+    public FondosInsuficientesException(double saldoActual, double montoSolicitado) {
+        super("Fondos insuficientes. Saldo: $" + saldoActual + ", Solicitado: $" + montoSolicitado);
+        this.saldoActual = saldoActual;
+        this.montoSolicitado = montoSolicitado;
+    }
+    
+    public double getSaldoActual() { return saldoActual; }
+    public double getMontoSolicitado() { return montoSolicitado; }
+}
+
+/**
+ * Excepción para cuentas bloqueadas
+ */
+class CuentaBloqueadaException extends Exception {
+    private String motivo;
+    
+    public CuentaBloqueadaException(String motivo) {
+        super("Cuenta bloqueada: " + motivo);
+        this.motivo = motivo;
+    }
+    
+    public String getMotivo() { return motivo; }
+}
+
+/**
+ * Excepción para límites de transacción
+ */
+class LimiteExcedidoException extends Exception {
+    private double limite;
+    
+    public LimiteExcedidoException(double limite) {
+        super("Límite de transacción excedido. Máximo permitido: $" + limite);
+        this.limite = limite;
+    }
+    
+    public double getLimite() { return limite; }
+}
+
+// ==================== CLASE SIMPLE PARA DEMOSTRAR USO ====================
+
+class CuentaBancaria {
+    private double saldo;
+    private boolean bloqueada;
+    private String motivoBloqueo;
+    private double limiteTransaccion;
+    
+    public CuentaBancaria(double saldoInicial) {
+        this.saldo = saldoInicial;
+        this.bloqueada = false;
+        this.limiteTransaccion = 5000.0;
+    }
+    
+    /**
+     * Método que demuestra el uso de excepciones personalizadas
+     */
+    public void retirar(double monto) throws FondosInsuficientesException, 
+                                           CuentaBloqueadaException, 
+                                           LimiteExcedidoException {
+        
+        // Validación 1: Cuenta bloqueada
+        if (bloqueada) {
+            throw new CuentaBloqueadaException(motivoBloqueo);
+        }
+        
+        // Validación 2: Límite de transacción
+        if (monto > limiteTransaccion) {
+            throw new LimiteExcedidoException(limiteTransaccion);
+        }
+        
+        // Validación 3: Fondos suficientes
+        if (saldo < monto) {
+            throw new FondosInsuficientesException(saldo, monto);
+        }
+        
+        // Operación exitosa
+        saldo -= monto;
+        System.out.println("Retiro exitoso. Nuevo saldo: $" + saldo);
+    }
+    
+    public void bloquear(String motivo) {
+        this.bloqueada = true;
+        this.motivoBloqueo = motivo;
+    }
+    
+    public double getSaldo() { return saldo; }
+}
+
+// ==================== EJEMPLO DE USO ====================
+
+class EjemploExcepciones {
+    public static void main(String[] args) {
+        CuentaBancaria cuenta = new CuentaBancaria(1000.0);
+        
+        // Ejemplo 1: Retiro normal (sin excepciones)
+        try {
+            cuenta.retirar(500.0);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+        
+        // Ejemplo 2: Fondos insuficientes
+        try {
+            cuenta.retirar(2000.0);
+        } catch (FondosInsuficientesException e) {
+            System.err.println("❌ " + e.getMessage());
+            System.err.println("💡 Sugerencia: Máximo disponible: $" + e.getSaldoActual());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+        
+        // Ejemplo 3: Límite excedido
+        try {
+            cuenta.retirar(6000.0);
+        } catch (LimiteExcedidoException e) {
+            System.err.println("❌ " + e.getMessage());
+            System.err.println("💡 Divida la transacción en montos menores a $" + e.getLimite());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+        
+        // Ejemplo 4: Cuenta bloqueada
+        cuenta.bloquear("Actividad sospechosa");
+        try {
+            cuenta.retirar(100.0);
+        } catch (CuentaBloqueadaException e) {
+            System.err.println("❌ " + e.getMessage());
+            System.err.println("💡 Contacte al banco para resolver: " + e.getMotivo());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+}
+
+quiero que re armes el ejemplo de sistema bancario, el punto era solo un ejemplo que muestra las excepciones personalizadas no todo un programa, solo un ejemplo
+
+Perfecto, ahora el ejemplo es mucho más conciso y se enfoca específicamente en demostrar las excepciones personalizadas.
+Ventajas Claras del Ejemplo:
+
+1. Legibilidad Mejorada:
+
+    FondosInsuficientesException es inmediatamente comprensible vs un genérico IllegalArgumentException
+    Los nombres de las excepciones documentan por sí mismos qué tipo de error ocurrió
+
+2. Información Contextual:
+
+    Cada excepción incluye datos específicos (saldo actual, límite, motivo del bloqueo)
+    Permite dar mensajes de error más útiles al usuario
+
+3. Manejo Diferenciado:
+
+    Cada tipo de error puede tratarse de manera específica
+    Fondos insuficientes → sugerir monto máximo
+    Límite excedido → sugerir dividir transacción
+    Cuenta bloqueada → dirigir a contactar al banco
+
+4. Robustez:
+
+    El código cliente puede decidir cómo manejar cada situación
+    Las excepciones transportan toda la información necesaria para tomar decisiones
+
+Comparación con Enfoque Sin Excepciones Personalizadas:
+
+Enfoque tradicional (menos efectivo):
+java
+
+// ❌ Menos claro y robusto
+public boolean retirar(double monto) {
+    if (bloqueada) return false;        // ¿Por qué falló?
+    if (monto > limite) return false;   // ¿Cuál era el límite?
+    if (saldo < monto) return false;    // ¿Cuánto faltaba?
+    // ...
+}
+
+Con excepciones personalizadas (mejor):
+java
+
+// ✅ Claro, informativo y robusto
+public void retirar(double monto) throws FondosInsuficientesException, 
+                                        CuentaBloqueadaException, 
+                                        LimiteExcedidoException {
+    // Validaciones que lanzan excepciones específicas con contexto
+}
+
+Este ejemplo demuestra cómo las excepciones personalizadas transforman el manejo de errores de algo genérico y ambiguo a algo específico, informativo y procesable programáticamente.
+
+
+Principios de POO Aplicados
+Encapsulación: Las excepciones encapsulan toda la información relevante sobre el error específico.
+Herencia: La jerarquía de excepciones permite manejar errores de manera general o específica según sea necesario.
+Polimorfismo: Un mismo bloque catch puede manejar diferentes tipos de excepciones bancarias de manera uniforme.
+Abstracción: Las excepciones abstraen la complejidad del manejo de errores, proporcionando interfaces claras para diferentes tipos de problemas.
+Este enfoque de excepciones personalizadas transforma el manejo de errores de una serie de verificaciones con códigos de error ambiguos a un sistema robusto, legible y mantenible que facilita tanto el desarrollo como el debugging del sistema bancario.
+
+
+BIBLIOGRAFIA:
+
+[^1]: https://es.slideshare.net/angenio2/programacin-3-listas-enlazadas
+
+[^2]: https://www.studocu.com/co/document/fundacion-universitaria-colombo-internacional/sistemas-normalizados-ii/listas-enlazadas/92240252
+
+
+[^4]: https://parzibyte.me/blog/posts/excepcion-personalizada-java/
+
+[^5]: https://certidevs.com/tutorial-java-excepciones
+
+[^6]: https://academiasanroque.com/excepciones-en-clases-de-java-manejo-y-buenas-practicas/
+
+[^7]: https://www.youtube.com/watch?v=qk67wS7WYxo
+
+[^8]: https://academicos.azc.uam.mx/franz/aed/docs/listas.pdf
+
+[^9]: https://github.com/carlosalvarezh/EstructuraDatosAlgoritmos1/blob/main/S04S05_EDLineales_ListasEnlazadas.ipynb
+
+[^10]: https://www.reddit.com/r/learnprogramming/comments/15mxrt/what_are_the_real_world_applications_of_linked/?tl=es-419
+
+[^11]: https://www.reddit.com/r/learnprogramming/comments/phvvqi/linked_list_pros_and_cons/?tl=es-419
+
+[^12]: https://openwebinars.net/blog/introduccion-a-poo-en-java-excepciones/
+
+[^13]: https://labex.io/es/tutorials/java-creating-custom-java-exceptions-117405
+

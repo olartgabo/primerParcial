@@ -1,0 +1,308 @@
+\documentclass[12pt,a4paper]{article}
+
+% Codificación y tipografía
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{microtype}
+
+% Paquetes matemáticos y utilidades
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{apacite}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{array}
+
+% Configuración de página
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Programación II}
+\lhead{José Gabriel Olarte Medrano}
+\cfoot{\thepage}
+
+% Configuración para listings (Java) -- soporte UTF-8 y caracteres acentuados
+\lstset{
+    language=Java,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black}\itshape,
+    stringstyle=\color{red},
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=8pt,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    frameround=tttt,
+    breaklines=true,
+    breakatwhitespace=false,
+    tabsize=2,
+    captionpos=b,
+    columns=fullflexible,
+    inputencoding=utf8,
+    extendedchars=true,
+    % Mapeo de caracteres acentuados para listings (UTF-8)
+    literate=
+      {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+      {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+      {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+      {¡}{{\textexclamdown}}1 {¿}{{\textquestiondown}}1
+}
+
+\begin{document}
+
+% Página de título
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    % Logo (no falla si el archivo no existe)
+    \IfFileExists{logo.png}{\includegraphics[width=1\textwidth]{logo.png}}{}
+    
+    \vspace{1cm}
+    
+    %{\LARGE\bfseries Universidad}
+    
+    \vspace{0.5cm}
+    
+    %{\large Facultad de Ingeniería}
+    
+    \vspace{1.5cm}
+    
+    {\Huge\bfseries Primer Parcial\\Programación II}
+    
+    \vspace{2cm}
+    
+    {\Large\textbf{Estudiante:} José Gabriel Olarte Medrano}
+    
+    \vspace{0.5cm}
+    
+    {\Large\textbf{Código:} 95154}
+    
+    \vspace{2cm}
+    
+    {\large\today}
+    
+    \vfill
+\end{titlepage}
+
+% Contenido principal
+\section{Pregunta 1: Listas Enlazadas vs Arreglos en Sistemas Universitarios}
+
+\subsection{Introducción}
+
+En el desarrollo de sistemas universitarios, la gestión eficiente de datos es fundamental para el correcto funcionamiento de las aplicaciones. Una de las decisiones más importantes que debe tomar un programador es la elección de la estructura de datos adecuada para almacenar y manipular información, especialmente cuando se trata de listas de estudiantes matriculados en cursos \cite{angenio2018}.
+
+\subsection{Implementación con Listas Enlazadas}
+
+Las listas enlazadas ofrecen ventajas significativas para manejar matrículas universitarias debido a su naturaleza dinámica. Según la literatura especializada, estas estructuras proporcionan una flexibilidad superior en comparación con los arreglos estáticos \cite{alvarez2023}.
+
+\subsubsection{Ventajas de las Listas Enlazadas}
+
+\begin{itemize}
+    \item \textbf{Flexibilidad de tamaño:} No es necesario conocer de antemano cuántos estudiantes se matricularán en un curso específico.
+    \item \textbf{Inserción/eliminación eficiente:} Agregar o quitar estudiantes tiene una complejidad temporal de O(1) cuando se tiene la referencia al nodo correspondiente.
+    \item \textbf{Uso eficiente de memoria:} Solo se asigna memoria para los estudiantes realmente matriculados, evitando el desperdicio de recursos.
+    \item \textbf{Facilidad para reordenar:} Cambiar el orden de los estudiantes solo requiere modificar las referencias entre nodos, sin necesidad de mover datos en memoria.
+\end{itemize}
+
+\subsection{Comparación con Arreglos}
+
+\subsubsection{Limitaciones de los Arreglos}
+
+Los arreglos presentan ciertas limitaciones en el contexto universitario:
+
+\begin{itemize}
+    \item \textbf{Tamaño fijo:} Es necesario definir un límite máximo de estudiantes al momento de la declaración.
+    \item \textbf{Desperdicio de memoria:} Si se define un arreglo de 1000 posiciones pero solo se tienen 50 estudiantes, se desperdician 950 espacios de memoria.
+    \item \textbf{Inserción/eliminación costosa:} Estas operaciones requieren desplazar elementos, resultando en una complejidad temporal de O(n).
+    \item \textbf{Fragmentación:} Los espacios vacíos pueden quedar dispersos en el arreglo, dificultando la gestión de memoria.
+\end{itemize}
+
+\subsubsection{Ventajas de los Arreglos}
+
+No obstante, los arreglos mantienen algunas ventajas importantes:
+
+\begin{itemize}
+    \item \textbf{Acceso directo:} Permiten acceder a cualquier estudiante por índice en tiempo constante O(1).
+    \item \textbf{Menor uso de memoria por nodo:} No requieren almacenar referencias adicionales como los punteros en las listas enlazadas.
+    \item \textbf{Mejor localidad de referencia:} Los datos están almacenados de forma contigua en memoria, lo que puede mejorar el rendimiento del caché.
+\end{itemize}
+
+\subsection{Aplicación en el Contexto Universitario}
+
+Para un sistema universitario, las listas enlazadas resultan superiores debido a que:
+
+\begin{enumerate}
+    \item Las matrículas fluctúan cada semestre de manera impredecible.
+    \item Es común que estudiantes se retiren durante el período académico.
+    \item No se requiere acceso aleatorio frecuente por posición específica.
+    \item El orden puede cambiar dinámicamente (por ejemplo, para organizar por rendimiento académico o alfabéticamente).
+\end{enumerate}
+
+\section{Pregunta 2: Excepciones Personalizadas en Sistemas Bancarios}
+
+\subsection{Análisis de Excepciones Personalizadas}
+
+Las excepciones personalizadas constituyen un mecanismo fundamental para mejorar tanto la legibilidad como la robustez de los programas \cite{parzibyte2021}. En el contexto de sistemas críticos como las aplicaciones bancarias, el manejo apropiado de excepciones puede marcar la diferencia entre un sistema confiable y uno propenso a errores.
+
+\subsection{Implementación en Sistema Bancario}
+
+A continuación se presenta un ejemplo práctico de implementación de excepciones personalizadas en un contexto bancario:
+
+\begin{lstlisting}[caption={Excepciones Personalizadas para Sistema Bancario}]
+// Excepción para fondos insuficientes
+class FondosInsuficientesException extends Exception {
+    private double saldoActual;
+    private double montoSolicitado;
+    
+    public FondosInsuficientesException(double saldoActual, double montoSolicitado) {
+        super("Fondos insuficientes. Saldo: $" + saldoActual + 
+              ", Solicitado: $" + montoSolicitado);
+        this.saldoActual = saldoActual;
+        this.montoSolicitado = montoSolicitado;
+    }
+    
+    public double getSaldoActual() { return saldoActual; }
+    public double getMontoSolicitado() { return montoSolicitado; }
+}
+
+// Excepción para cuentas bloqueadas
+class CuentaBloqueadaException extends Exception {
+    private String motivo;
+    
+    public CuentaBloqueadaException(String motivo) {
+        super("Cuenta bloqueada: " + motivo);
+        this.motivo = motivo;
+    }
+    
+    public String getMotivo() { return motivo; }
+}
+
+// Excepción para límites de transacción
+class LimiteExcedidoException extends Exception {
+    private double limite;
+    
+    public LimiteExcedidoException(double limite) {
+        super("Límite de transacción excedido. Máximo permitido: $" + limite);
+        this.limite = limite;
+    }
+    
+    public double getLimite() { return limite; }
+}
+\end{lstlisting}
+
+\subsection{Ejemplo de Uso}
+
+\begin{lstlisting}[caption={Implementación de Método con Excepciones Personalizadas}]
+public void retirar(double monto) throws FondosInsuficientesException, 
+                                       CuentaBloqueadaException, 
+                                       LimiteExcedidoException {
+    
+    // Validación 1: Cuenta bloqueada
+    if (bloqueada) {
+        throw new CuentaBloqueadaException(motivoBloqueo);
+    }
+    
+    // Validación 2: Límite de transacción
+    if (monto > limiteTransaccion) {
+        throw new LimiteExcedidoException(limiteTransaccion);
+    }
+    
+    // Validación 3: Fondos suficientes
+    if (saldo < monto) {
+        throw new FondosInsuficientesException(saldo, monto);
+    }
+    
+    // Operación exitosa
+    saldo -= monto;
+}
+\end{lstlisting}
+
+\subsection{Ventajas de las Excepciones Personalizadas}
+
+\subsubsection{Legibilidad Mejorada}
+
+Las excepciones personalizadas como \texttt{FondosInsuficientesException} son inmediatamente comprensibles, a diferencia de excepciones genéricas como \texttt{IllegalArgumentException}. Los nombres de las excepciones documentan por sí mismos el tipo de error que ha ocurrido \cite{certidevs2022}.
+
+\subsubsection{Información Contextual}
+
+Cada excepción incluye datos específicos relevantes al error:
+\begin{itemize}
+    \item Saldo actual y monto solicitado para fondos insuficientes
+    \item Límite máximo para transacciones excedidas
+    \item Motivo específico del bloqueo de cuenta
+\end{itemize}
+
+\subsubsection{Manejo Diferenciado}
+
+Cada tipo de error puede tratarse de manera específica:
+\begin{itemize}
+    \item \textbf{Fondos insuficientes:} Sugerir el monto máximo disponible
+    \item \textbf{Límite excedido:} Recomendar dividir la transacción
+    \item \textbf{Cuenta bloqueada:} Dirigir al cliente a contactar al banco
+\end{itemize}
+
+\subsection{Principios de POO Aplicados}
+
+La implementación de excepciones personalizadas demuestra la aplicación de los principios fundamentales de la Programación Orientada a Objetos \cite{academia2023}:
+
+\begin{itemize}
+    \item \textbf{Encapsulación:} Las excepciones encapsulan toda la información relevante sobre el error específico.
+    \item \textbf{Herencia:} La jerarquía de excepciones permite manejar errores de manera general o específica según sea necesario.
+    \item \textbf{Polimorfismo:} Un mismo bloque \texttt{catch} puede manejar diferentes tipos de excepciones bancarias de manera uniforme.
+    \item \textbf{Abstracción:} Las excepciones abstraen la complejidad del manejo de errores, proporcionando interfaces claras para diferentes tipos de problemas.
+\end{itemize}
+
+\section{Conclusiones}
+
+Este análisis ha demostrado la importancia de seleccionar las estructuras de datos y mecanismos de manejo de errores apropiados para cada contexto específico. Las listas enlazadas ofrecen ventajas significativas en sistemas universitarios donde la flexibilidad y el uso eficiente de memoria son prioritarios. Por otro lado, las excepciones personalizadas transforman el manejo de errores de un enfoque genérico y ambiguo a un sistema robusto, legible y mantenible que facilita tanto el desarrollo como el debugging de sistemas críticos como las aplicaciones bancarias.
+
+La implementación correcta de estos conceptos no solo mejora la calidad del código, sino que también contribuye a crear sistemas más confiables y fáciles de mantener a largo plazo.
+
+% Bibliografía
+
+\begin{thebibliography}{99}
+
+\bibitem[Angenio, 2018]{angenio2018}
+Angenio, A. (2018). \textit{Programación 3: Listas enlazadas}. SlideShare. Recuperado de \url{https://es.slideshare.net/angenio2/programacin-3-listas-enlazadas}
+
+\bibitem[Studocu, 2023]{studocu2023}
+Studocu. (2023). \textit{Listas enlazadas - Sistemas normalizados II}. Fundación Universitaria Colombo Internacional. Recuperado de \url{https://www.studocu.com/co/document/fundacion-universitaria-colombo-internacional/sistemas-normalizados-ii/listas-enlazadas/92240252}
+
+\bibitem[Parzibyte, 2021]{parzibyte2021}
+Parzibyte. (2021). \textit{Excepción personalizada en Java}. Parzibyte's blog. Recuperado de \url{https://parzibyte.me/blog/posts/excepcion-personalizada-java/}
+
+\bibitem[CertiDevs, 2022]{certidevs2022}
+CertiDevs. (2022). \textit{Tutorial Java excepciones}. CertiDevs. Recuperado de \url{https://certidevs.com/tutorial-java-excepciones}
+
+\bibitem[Academia San Roque, 2023]{academia2023}
+Academia San Roque. (2023). \textit{Excepciones en clases de Java: Manejo y buenas prácticas}. Academia San Roque. Recuperado de \url{https://academiasanroque.com/excepciones-en-clases-de-java-manejo-y-buenas-practicas/}
+
+\bibitem[Franz, 2023]{franz2023}
+Franz. (2023). \textit{Listas enlazadas}. Universidad Autónoma Metropolitana. Recuperado de \url{https://academicos.azc.uam.mx/franz/aed/docs/listas.pdf}
+
+\bibitem[Álvarez, 2023]{alvarez2023}
+Álvarez, C. H. (2023). \textit{Estructuras de datos lineales: Listas enlazadas}. GitHub. Recuperado de \url{https://github.com/carlosalvarezh/EstructuraDatosAlgoritmos1/blob/main/S04S05_EDLineales_ListasEnlazadas.ipynb}
+
+\bibitem[Reddit Programming, 2021]{reddit2021}
+Reddit. (2021). \textit{What are the real world applications of linked lists?} r/learnprogramming. Recuperado de \url{https://www.reddit.com/r/learnprogramming/comments/15mxrt/what_are_the_real_world_applications_of_linked/}
+
+\bibitem[Reddit Programming 2, 2021]{reddit2021b}
+Reddit. (2021). \textit{Linked list pros and cons}. r/learnprogramming. Recuperado de \url{https://www.reddit.com/r/learnprogramming/comments/phvvqi/linked_list_pros_and_cons/}
+
+\bibitem[OpenWebinars, 2022]{openwebinars2022}
+OpenWebinars. (2022). \textit{Introducción a POO en Java: Excepciones}. OpenWebinars Blog. Recuperado de \url{https://openwebinars.net/blog/introduccion-a-poo-en-java-excepciones/}
+
+\bibitem[LabEx, 2023]{labex2023}
+LabEx. (2023). \textit{Creating custom Java exceptions}. LabEx Tutorials. Recuperado de \url{https://labex.io/es/tutorials/java-creating-custom-java-exceptions-117405}
+
+\end{thebibliography}
+
+\end{document}
